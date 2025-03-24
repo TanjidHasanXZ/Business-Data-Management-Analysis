@@ -1,4 +1,4 @@
-# Business Partner Master Data & Sales Analysis
+# Business Data Management & Analysis
 
 ## Project Overview
 This project focuses on managing Business Partner Master Data using **MySQL** and **Excel**. It includes:
