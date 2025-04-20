@@ -11,7 +11,7 @@ This project focuses on managing Business Partner Master Data using **MySQL** an
 1. **database_setup.sql** - Creates database tables and loads data.
 2. **data_cleaning.sql** - Standardizes data and removes duplicates.
 3. **reporting_queries.sql** - Generates business insights (e.g., sales trends, top customers).
-4. **analysis.xlsx** - Excel file with PivotTables for data visualization.
+4. **Business Data Management and Analysis.xlsx** - Excel file with PivotTables for data visualization.
 5. **README.md** - Project documentation.
 
 ## Setup Instructions
