@@ -15,13 +15,15 @@ CREATE TABLE IF NOT EXISTS BusinessPartner (
 );
 
 -- Create Orders Table
-CREATE TABLE IF NOT EXISTS Orders (
-    OrderID VARCHAR(20) PRIMARY KEY,
-    OrderDate DATE,
-    ShipDate DATE,
+
+CREATE TABLE Orders (
+    OrderID VARCHAR(20),
+    OrderDate VARCHAR(50),
+    ShipDate VARCHAR(50),
     ShipMode VARCHAR(50),
     CustomerID VARCHAR(20),
     CustomerName VARCHAR(255),
+    CompanyName VARCHAR(255) NOT NULL,
     Segment VARCHAR(50),
     Country VARCHAR(100),
     City VARCHAR(100),
@@ -32,10 +34,42 @@ CREATE TABLE IF NOT EXISTS Orders (
     Category VARCHAR(50),
     SubCategory VARCHAR(50),
     ProductName VARCHAR(255),
-    Sales DECIMAL(10,2)
+    Sales VARCHAR(50)
 );
 
--- Load Data (Modify path as needed for MySQL LOAD DATA INFILE)
--- LOAD DATA INFILE '/path/to/train.csv' INTO TABLE Orders
--- FIELDS TERMINATED BY ','
--- IGNORE 1 ROWS;
+
+ALTER TABLE BusinessPartner
+MODIFY CreatedAt DATETIME;
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/BusinessPartner.csv'
+INTO TABLE BusinessPartner
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS
+(PartnerID, CompanyName, Address, VATNumber, Email, PhoneNumber, Status, CreatedAt);
+
+
+
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/Orders.csv'
+INTO TABLE Orders
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 ROWS
+(OrderID, OrderDate, ShipDate, ShipMode, CustomerID, CustomerName, CompanyName, Segment,
+ Country, City, State, PostalCode, Region, ProductID, Category, SubCategory,
+ ProductName, Sales);
+
+ALTER TABLE Orders
+ADD COLUMN PartnerID INT,
+ADD CONSTRAINT fk_orders_partner
+FOREIGN KEY (PartnerID) REFERENCES BusinessPartner(PartnerID);
+
+UPDATE Orders o
+JOIN BusinessPartner bp ON o.CompanyName = bp.CompanyName
+SET o.PartnerID = bp.PartnerID;
+
+
+
+drop table businesspartner;
